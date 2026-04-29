@@ -1,5 +1,8 @@
 import useStore from "../store/useStore";
 
+// Fixed column widths shared between header and body tables
+const colWidths = ["w-[18%]", "w-[22%]", "w-[30%]", "w-[20%]", "w-[10%]"];
+
 function SubmissionsTable({ onViewSubmission }) {
   const { submissions, isLoadingSubmissions } = useStore();
 
@@ -40,24 +43,17 @@ function SubmissionsTable({ onViewSubmission }) {
       >
         {/* Table Header - Fixed */}
         <div className="border-b border-outline-variant">
-          <table className="w-full">
+          <table className="w-full table-fixed">
+            <colgroup>
+              {colWidths.map((w, i) => <col key={i} className={w} />)}
+            </colgroup>
             <thead>
               <tr className="bg-surface-container-low">
-                <th className="text-left px-6 py-4 text-sm font-semibold text-on-surface-variant">
-                  Name
-                </th>
-                <th className="text-left px-6 py-4 text-sm font-semibold text-on-surface-variant">
-                  Email
-                </th>
-                <th className="text-left px-6 py-4 text-sm font-semibold text-on-surface-variant">
-                  Message
-                </th>
-                <th className="text-left px-6 py-4 text-sm font-semibold text-on-surface-variant">
-                  Date
-                </th>
-                <th className="text-center px-6 py-4 text-sm font-semibold text-on-surface-variant">
-                  Action
-                </th>
+                <th className="text-left px-6 py-4 text-sm font-semibold text-on-surface-variant">Name</th>
+                <th className="text-left px-6 py-4 text-sm font-semibold text-on-surface-variant">Email</th>
+                <th className="text-left px-6 py-4 text-sm font-semibold text-on-surface-variant">Message</th>
+                <th className="text-left px-6 py-4 text-sm font-semibold text-on-surface-variant">Date</th>
+                <th className="text-center px-6 py-4 text-sm font-semibold text-on-surface-variant">Action</th>
               </tr>
             </thead>
           </table>
@@ -69,20 +65,18 @@ function SubmissionsTable({ onViewSubmission }) {
             <div className="flex items-center justify-center h-full">
               <div className="text-center">
                 <div className="inline-block w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin mb-3"></div>
-                <p className="text-sm text-on-surface-variant">
-                  Loading submissions...
-                </p>
+                <p className="text-sm text-on-surface-variant">Loading submissions...</p>
               </div>
             </div>
           ) : (
-            <table className="w-full">
+            <table className="w-full table-fixed">
+              <colgroup>
+                {colWidths.map((w, i) => <col key={i} className={w} />)}
+              </colgroup>
               <tbody>
                 {submissions.length === 0 ? (
                   <tr>
-                    <td
-                      colSpan="5"
-                      className="px-6 py-12 text-center text-on-surface-variant"
-                    >
+                    <td colSpan="5" className="px-6 py-12 text-center text-on-surface-variant">
                       No submissions found
                     </td>
                   </tr>
@@ -93,17 +87,17 @@ function SubmissionsTable({ onViewSubmission }) {
                       className="border-b border-outline-variant last:border-b-0 hover:bg-surface-container-low transition-colors"
                     >
                       <td className="px-6 py-4">
-                        <div className="font-semibold text-on-background">
+                        <div className="font-semibold text-on-background truncate">
                           {submission.name}
                         </div>
                       </td>
                       <td className="px-6 py-4">
-                        <div className="text-sm text-on-surface-variant">
+                        <div className="text-sm text-on-surface-variant truncate">
                           {submission.email}
                         </div>
                       </td>
                       <td className="px-6 py-4">
-                        <div className="text-sm text-on-surface-variant max-w-md">
+                        <div className="text-sm text-on-surface-variant truncate">
                           {truncateMessage(submission.message)}
                         </div>
                       </td>
@@ -117,9 +111,7 @@ function SubmissionsTable({ onViewSubmission }) {
                           onClick={() => onViewSubmission(submission)}
                           className="inline-flex items-center gap-1 px-4 py-2 text-sm font-semibold text-primary hover:bg-primary/5 rounded-lg transition-colors"
                         >
-                          <span className="material-symbols-outlined text-lg">
-                            visibility
-                          </span>
+                          <span className="material-symbols-outlined text-lg">visibility</span>
                           View
                         </button>
                       </td>
