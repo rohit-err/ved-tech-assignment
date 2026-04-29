@@ -5,6 +5,7 @@ function Header() {
   const { logout } = useStore();
 
   const handleLogout = async () => {
+    sessionStorage.removeItem('selectedSubmissionId');
     await logout();
     toast.success("Logged out successfully!");
   };
