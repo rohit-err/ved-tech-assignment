@@ -2,6 +2,14 @@
 
 A full-stack monorepo containing a business website, an admin panel, and a backend API.
 
+## Live Links
+
+| Part | URL |
+|------|-----|
+| Business Website | https://ved-tech-services-website.vercel.app |
+| Admin Panel | https://ved-tech-assignment-admin-panel.vercel.app |
+| Backend API | https://ved-tech-assignment-backend.onrender.com |
+
 ## Project Structure
 
 ```
@@ -56,7 +64,10 @@ GMAIL_APP_PASSWORD=your_gmail_app_password
 | POST | `/api/auth/logout` | No | Admin logout |
 | GET | `/api/auth/checkAuth` | Yes | Verify token |
 | POST | `/api/submission` | No | Create submission |
-| GET | `/api/submission` | Yes | Get all submissions |
+| GET | `/api/submission` | Yes | Get all submissions (newest first) |
+
+### Note on Email Notifications
+Email notifications are fully implemented using Nodemailer + Gmail and work correctly in the local environment. Render's free tier restricts outbound SMTP connections (ports 465/587), which prevents email delivery in production. This is a known platform-level limitation.
 
 ---
 
@@ -66,7 +77,7 @@ React admin panel for managing contact form submissions.
 
 ### Stack
 - React 18
-- Zustand (state management)
+- Zustand
 - Axios
 - Tailwind CSS
 - react-hot-toast
@@ -88,11 +99,12 @@ VITE_API_URL=http://localhost:8000/api
 ```
 
 ### Features
-- JWT-based authentication with cookie persistence
+- JWT authentication with cookie persistence
 - Auth check on load with full-page loader
-- Submissions table with fixed header and scrollable body
+- Submissions table with fixed header, scrollable body, newest first
 - View individual submission details
 - Session restore on page refresh
+- sessionStorage cleared on logout
 - Toast notifications for all actions
 
 ---
@@ -127,9 +139,9 @@ VITE_API_URL=http://localhost:8000/api
 
 ### Features
 - Smooth scrolling with Lenis
-- Framer Motion animations
+- Framer Motion scroll-triggered animations
 - Contact form with validation and API integration
-- Fully responsive (mobile-first)
+- Fully responsive, mobile-first
 
 ---
 
@@ -141,4 +153,4 @@ VITE_API_URL=http://localhost:8000/api
 | Admin Panel | Vercel | `frontend` |
 | Business Website | Vercel | `ved-tech-services-website` |
 
-After deploying the backend, update `VITE_API_URL` in `.env.production` for both frontend projects and add the Vercel URLs to the backend CORS config.
+After deploying the backend, update `VITE_API_URL` in Vercel environment variables for both frontend projects and add the Vercel URLs to the backend CORS config in `backend/index.js`.
