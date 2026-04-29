@@ -23,22 +23,66 @@ function SubmissionsTable({ onViewSubmission }) {
     return message.substring(0, maxLength) + "...";
   };
 
+  const loader = (
+    <div className="flex items-center justify-center h-full">
+      <div className="text-center">
+        <div className="inline-block w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin mb-3"></div>
+        <p className="text-sm text-on-surface-variant">Loading submissions...</p>
+      </div>
+    </div>
+  );
+
   return (
     <div>
       {/* Page Header */}
       <div className="mb-6">
-        <h2 className="text-3xl font-bold text-on-background mb-2">
-          Contact Submissions
-        </h2>
+        <h2 className="text-3xl font-bold text-on-background mb-2">Contact Submissions</h2>
         <p className="text-sm text-on-surface-variant">
-          Total submissions:{" "}
-          <span className="font-semibold">{submissions.length}</span>
+          Total submissions: <span className="font-semibold">{submissions.length}</span>
         </p>
       </div>
 
-      {/* Table Card */}
+      {/* Mobile: Card Layout */}
+      <div className="md:hidden flex flex-col gap-3">
+        {isLoadingSubmissions ? (
+          <div className="flex items-center justify-center py-16">{loader}</div>
+        ) : submissions.length === 0 ? (
+          <div className="bg-white rounded-xl border border-outline-variant p-8 text-center text-on-surface-variant">
+            No submissions found
+          </div>
+        ) : (
+          submissions.map((submission) => (
+            <div
+              key={submission._id}
+              className="bg-white rounded-xl border border-outline-variant p-4 shadow-sm"
+            >
+              <div className="flex items-start justify-between gap-4 mb-3">
+                <div>
+                  <div className="font-semibold text-on-background">{submission.name}</div>
+                  <div className="text-sm text-on-surface-variant">{submission.email}</div>
+                </div>
+                <button
+                  onClick={() => onViewSubmission(submission)}
+                  className="inline-flex items-center gap-1 px-3 py-1.5 text-sm font-semibold text-primary hover:bg-primary/5 rounded-lg transition-colors flex-shrink-0"
+                >
+                  <span className="material-symbols-outlined text-lg">visibility</span>
+                  View
+                </button>
+              </div>
+              <div className="text-sm text-on-surface-variant mb-2">
+                {truncateMessage(submission.message)}
+              </div>
+              <div className="text-xs text-on-surface-variant">
+                {formatDate(submission.createdAt)}
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+
+      {/* Desktop: Table Layout */}
       <div
-        className="bg-white rounded-xl border border-outline-variant shadow-sm flex flex-col overflow-hidden"
+        className="hidden md:flex bg-white rounded-xl border border-outline-variant shadow-sm flex-col overflow-hidden"
         style={{ height: "calc(100vh - 220px)" }}
       >
         {/* Table Header - Fixed */}
@@ -61,14 +105,7 @@ function SubmissionsTable({ onViewSubmission }) {
 
         {/* Table Body - Scrollable */}
         <div className="overflow-y-auto flex-1 custom-scrollbar">
-          {isLoadingSubmissions ? (
-            <div className="flex items-center justify-center h-full">
-              <div className="text-center">
-                <div className="inline-block w-10 h-10 border-4 border-primary border-t-transparent rounded-full animate-spin mb-3"></div>
-                <p className="text-sm text-on-surface-variant">Loading submissions...</p>
-              </div>
-            </div>
-          ) : (
+          {isLoadingSubmissions ? loader : (
             <table className="w-full table-fixed">
               <colgroup>
                 {colWidths.map((w, i) => <col key={i} className={w} />)}
@@ -87,24 +124,16 @@ function SubmissionsTable({ onViewSubmission }) {
                       className="border-b border-outline-variant last:border-b-0 hover:bg-surface-container-low transition-colors"
                     >
                       <td className="px-6 py-4">
-                        <div className="font-semibold text-on-background truncate">
-                          {submission.name}
-                        </div>
+                        <div className="font-semibold text-on-background truncate">{submission.name}</div>
                       </td>
                       <td className="px-6 py-4">
-                        <div className="text-sm text-on-surface-variant truncate">
-                          {submission.email}
-                        </div>
+                        <div className="text-sm text-on-surface-variant truncate">{submission.email}</div>
                       </td>
                       <td className="px-6 py-4">
-                        <div className="text-sm text-on-surface-variant truncate">
-                          {truncateMessage(submission.message)}
-                        </div>
+                        <div className="text-sm text-on-surface-variant truncate">{truncateMessage(submission.message)}</div>
                       </td>
                       <td className="px-6 py-4">
-                        <div className="text-sm text-on-surface-variant whitespace-nowrap">
-                          {formatDate(submission.createdAt)}
-                        </div>
+                        <div className="text-sm text-on-surface-variant whitespace-nowrap">{formatDate(submission.createdAt)}</div>
                       </td>
                       <td className="px-6 py-4 text-center">
                         <button
