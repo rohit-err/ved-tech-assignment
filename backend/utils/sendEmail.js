@@ -1,19 +1,11 @@
-const nodemailer = require("nodemailer");
+const { Resend } = require("resend");
 
-const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 587,
-  secure: false,
-  auth: {
-    user: process.env.ADMIN_EMAIL,
-    pass: process.env.GMAIL_APP_PASSWORD,
-  },
-});
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 const sendEmail = async ({ name, email, message }) => {
-  await transporter.sendMail({
-    from: `"Ved Tech Services" <${process.env.ADMIN_EMAIL}>`,
-    replyTo: email,
+  await resend.emails.send({
+    from: "Ved Tech Services <onboarding@resend.dev>",
+    reply_to: email,
     to: process.env.CONTACT_EMAIL,
     subject: `New Contact Form Submission from ${name}`,
     text: `You have a new contact form submission.\n\nName: ${name}\nEmail: ${email}\nMessage: ${message || "No message provided"}`,
