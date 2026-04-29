@@ -9,7 +9,6 @@ const SESSION_KEY = "selectedSubmissionId";
 
 function Dashboard() {
   const {
-    submissions,
     selectedSubmission,
     setSelectedSubmission,
     getSubmissions,
