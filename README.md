@@ -101,11 +101,12 @@ VITE_API_URL=http://localhost:8000/api
 ### Features
 - JWT authentication with cookie persistence
 - Auth check on load with full-page loader
-- Submissions table with fixed header, scrollable body, newest first
+- Submissions table (desktop) / card list (mobile), newest first
 - View individual submission details
 - Session restore on page refresh
 - sessionStorage cleared on logout
 - Toast notifications for all actions
+- Fully responsive (card layout on mobile, table on desktop)
 
 ---
 
