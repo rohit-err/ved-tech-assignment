@@ -24,7 +24,7 @@ const createSubmission = async (req, res) => {
 
 const getSubmissions = async (req, res) => {
   try {
-    const submissionList = await submissionModel.find();
+    const submissionList = await submissionModel.find().sort({ createdAt: -1 });
     return res.status(200).json({
       success: true,
       submissions: submissionList,
